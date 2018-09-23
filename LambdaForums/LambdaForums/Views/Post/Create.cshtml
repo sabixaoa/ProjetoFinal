@@ -1,0 +1,45 @@
+﻿@model LambdaForums.Models.Post.NewPostModel
+
+@{
+    ViewData["Title"] = "Criar Post";
+}
+
+
+<div class="container body-content">
+    <div class="row sectionHeader1">
+        <div class="sectionHeading1 noBorder">
+            Novo post | @Model.ForumName
+            <span id="headingBtn">
+                <a asp-controller="Forum"
+                   asp-action="Topic"
+                   asp-route-id="@Model.ForumId"
+                   class="btn btn-back">
+                    Voltar à disciplina - @Model.ForumName
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="createPostSection">
+            <div class="authorBlock">
+                <strong>@Model.AuthorName</strong>
+            </div>
+            <form asp-action="AddPost" method="post" id="addPostForm">
+                <div class="form-group">
+                    <label asp-for="Title">Titulo</label>
+                    <input required asp-for="Title" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Content">Conteúdo</label>
+                    <textarea required asp-for="Content" class="form-control" rows="20"></textarea>
+                </div>
+                <button type="submit" id="submitPostBtn" class="btn btn-submitPost">
+                    Submit Post
+                </button>
+                <input asp-for="ForumId" type="hidden" />
+            </form>
+        </div>
+    </div>
+
+</div>
+

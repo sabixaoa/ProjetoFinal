@@ -1,0 +1,208 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<LambdaForums.Data.Models.ApplicationUser> UserManager
+@inject SignInManager<LambdaForums.Data.Models.ApplicationUser> SignInManager 
+
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TPSI</title>
+
+    <environment include="Development, Production">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">
+
+        .navbar-default {
+            background-color: #f64141;
+            border-color: #d82d2d;
+        }
+
+            .navbar-default .navbar-brand {
+                color: #feffff;
+            }
+
+                .navbar-default .navbar-brand:hover,
+                .navbar-default .navbar-brand:focus {
+                    color: #e5ddee;
+                }
+
+            .navbar-default .navbar-text {
+                color: #feffff;
+            }
+
+            .navbar-default .navbar-nav > li > a {
+                color: #feffff;
+            }
+
+                .navbar-default .navbar-nav > li > a:hover,
+                .navbar-default .navbar-nav > li > a:focus {
+                    color: #e5ddee;
+                }
+
+            .navbar-default .navbar-nav > li > .dropdown-menu {
+                background-color: #f64141;
+            }
+
+                .navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+                    color: #feffff;
+                }
+
+                    .navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+                    .navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+                        color: #e5ddee;
+                        background-color: #d82d2d;
+                    }
+
+                .navbar-default .navbar-nav > li > .dropdown-menu > li.divider {
+                    background-color: #d82d2d;
+                }
+
+            .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+            .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+            .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+                color: #e5ddee;
+                background-color: #d82d2d;
+            }
+
+            .navbar-default .navbar-nav > .active > a,
+            .navbar-default .navbar-nav > .active > a:hover,
+            .navbar-default .navbar-nav > .active > a:focus {
+                color: #e5ddee;
+                background-color: #d82d2d;
+            }
+
+            .navbar-default .navbar-nav > .open > a,
+            .navbar-default .navbar-nav > .open > a:hover,
+            .navbar-default .navbar-nav > .open > a:focus {
+                color: #e5ddee;
+                background-color: #d82d2d;
+            }
+
+            .navbar-default .navbar-toggle {
+                border-color: #d82d2d;
+            }
+
+                .navbar-default .navbar-toggle:hover,
+                .navbar-default .navbar-toggle:focus {
+                    background-color: #d82d2d;
+                }
+
+                .navbar-default .navbar-toggle .icon-bar {
+                    background-color: #feffff;
+                }
+
+            .navbar-default .navbar-collapse,
+            .navbar-default .navbar-form {
+                border-color: #feffff;
+            }
+
+            .navbar-default .navbar-link {
+                color: #feffff;
+            }
+
+                .navbar-default .navbar-link:hover {
+                    color: #e5ddee;
+                }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-controller="Forum" asp-action="Index">Disciplinas</a></li>
+                        
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                                <ul class="dropdown-menu">
+                                    
+                                    <li><a asp-controller="Forum" asp-action="Create">Criar uma Disciplina</a></li>
+                                    <li><a asp-controller="Profile" asp-action="Index">Listar Utilizadores</a></li>
+                                </ul>
+                            </li>
+                                }
+                            
+                        
+                    }
+                </ul>
+                @if (!SignInManager.IsSignedIn(User))
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a asp-controller="Account" asp-action="Login">Entrar</a></li>
+                        <li class="active"><a asp-controller="Account" asp-action="Register">Registo</a></li>
+                    </ul>
+                }
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a asp-controller="Profile"
+                                   asp-action="Detail"
+                                   asp-route-id="@UserManager.GetUserId(User)">
+                                    @UserManager.GetUserName(User)
+                                </a>
+                            </li>
+                            <li>
+                                <button type="submit" class="btn btn-link navbar-btn navbar-link">
+                                    Sign Out
+                                </button>
+                            </li>
+                        </ul>
+                    </form>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

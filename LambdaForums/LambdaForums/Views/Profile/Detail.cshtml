@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model LambdaForums.Models.ApplicationUser.ProfileModel
+
+@inject UserManager<LambdaForums.Data.Models.ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+<div class="container body-content">
+    <div class="row sectionHeader1">
+        <div class="sectionHeading1">
+           Perfil
+        </div>
+    </div>
+    <div class="row userProfile">
+
+        <div class="col-md-8">
+            <span id="userName">@Model.UserName</span>
+            @if (@Model.IsAdmin)
+            {
+                <span class="isAdmin">Admin</span>
+            }
+            <span id="userEmailLabel">Email: @Model.Email</span>
+            <span id="userCreatedLabel">Member Since: @Model.MemberSince</span>
+        </div>
+    </div>
+</div>

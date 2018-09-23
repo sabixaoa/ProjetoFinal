@@ -1,0 +1,52 @@
+﻿@model LambdaForums.Models.Forum.ForumIndexModel
+@{
+    ViewData["Title"] = "Disciplinas";
+}
+
+<div class="container body-content">
+    <div class="row sectionHeader1">
+        <div class="sectionHeader1">Lista de Disciplinas</div>
+
+
+    </div>
+
+    <div class="row" id="forumIndexContent">
+        <table class="table table-hover" id="forumIndexTable">
+            <tbody>
+                @foreach (var forum in Model.ForumList)
+                {
+                    <tr>
+                        <td>
+
+                            <div class="forumData">
+                                <div class="forumTitle">
+                                    <a asp-controller="Forum" asp-action="Topic" asp-route-id="@forum.Id">@forum.Name</a>
+                                </div>
+                                <div class="forumSubTitle">
+                                    @if (forum.HasRecentPost)
+                                    {
+                                        <div class="hasRecentPost">RECENTE</div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="forumPostCount">
+                                @forum.NumberOfPosts Mensagens
+                            </div>
+                            <div class="forumMemberCount">
+                                @forum.NumberOfUsers Utilizadores
+                            </div>
+                        </td>
+                        <td>
+                            <div class="forumDescription">
+                                @forum.Description
+                            </div>
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

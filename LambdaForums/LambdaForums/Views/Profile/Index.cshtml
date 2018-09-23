@@ -1,0 +1,46 @@
+﻿@model LambdaForums.Models.ApplicationUser.ProfileListModel
+
+@inject UserManager<LambdaForums.Data.Models.ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+<div class="container body-content">
+    <div class="row sectionHeader1">
+        <div class="sectionHeading1">Listar Utilizadores</div>
+    </div>
+    <div class="row" id="forumIndexContent">
+        <table class="table table-hover" id="userIndexTable">
+            <thead>
+                <tr>
+                    <th>Nome de Utilizador</th>
+                    <th>Email</th>
+                    <th>Membro desde</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var profile in Model.Profiles)
+                {
+                    <tr class="userRow">
+                        <td>
+                            @profile.UserName
+                        </td>
+                        <td>
+                            @profile.Email
+                        </td>
+                        <td>
+                            @profile.MemberSince
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-default" asp-controller="Profile" asp-action="DeleteUser" asp-route-id="@profile.UserId">Apagar</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

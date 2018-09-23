@@ -1,0 +1,115 @@
+﻿@model LambdaForums.Models.Forum.ForumTopicModel
+
+@{
+    ViewData["Title"] = "Posts";
+}
+
+<div class="container body-content">
+    <div class="row sectionHeader1">
+        <div class="sectionHeading1">
+            <span>@Model.Forum.Name</span>
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+            <span id="headingBtn">
+                <a asp-controller="Post"
+                   asp-action="Create"
+                   asp-route-id="@Model.Forum.Id" class="btn btn-newPost">
+                    Criar Post
+                </a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-default" asp-controller="Forum" asp-action="DeleteForum" asp-route-id="@Model.Forum.Id">Apagar</a>
+                }
+
+
+            </span>
+            }
+            <form asp-controller="Forum" asp-action="Search" method="post">
+                <div class="searchForm">
+                    <input asp-for="SearchQuery" type="text" placeholder="Procurar" class="searchBar" onfocus="clearThis(this)">
+                    <button type="submit" class="btn btn-forumSearch">
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+                <input asp-for="Forum.Id" name="id" type="hidden" />
+            </form>
+        </div>
+        <div class="sectionDescription1">
+            <p>Bem vindo à disciplina @Model.Forum.Name.</p>
+
+        </div>
+    </div>
+    <div class="row forumIndexContent">
+        @if (Model.Posts.Any())
+        {
+            <table class="table table-hover table-boredered" id="forumIndexTable">
+                <tbody>
+                    @foreach (var post in Model.Posts)
+                    {
+                        <tr>
+                            <td>
+                                <div class="postData">
+                                    <div class="postTitle">
+                                        <a asp-controller="Post" asp-action="Index" asp-route-id="@post.Id">@post.Title</a>
+                                    </div>
+                                    <div class="forumSubTitle">
+                                        <div>
+                                            <span class="postAuthor">
+                                                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@post.AuthorId">
+                                                    @post.AuthorName
+                                                </a>
+                                            </span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="forumPostCount">
+                                    Respostas: @post.RepliesCount
+                                </div>
+                            </td>
+                            <td>
+                                <div class="postDate">@post.DatePosted</div>
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="btn btn-default"
+                                       asp-controller="Post"
+                                       asp-action="DeletePost"
+                                       asp-route-id="@post.Id"
+                                       asp-route-forum="@Model.Forum.Id">Apagar</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="noPosts">
+                <i class="material-icons md-72">question_answer</i>
+                <h3>
+                    It looks like there are no posts to be found.
+                    Why not
+                    <a asp-controller="Post" asp-action="Create" asp-route-id="@Model.Forum.Id">
+                        <span>Post</span>
+                    </a>
+                    Something?
+                </h3>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function clearThis(target) {
+            target.value = "";
+
+        }
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@model LambdaForums.Models.Forum.AddForumModel
+@{
+    ViewData["Title"] = "Criar Disciplinas";
+}
+
+<div class="container body-content">
+    <div class="row sectionHeader1">
+        <div class="sectionHeading1">
+            <h2>Criar disciplina</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="sectionHeader1">
+            <div class="sectionHeading1">
+                <div id="createForumSection">
+                    <form asp-action="AddForum" method="post" id="createForumForm" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Title">Nome</label>
+                            <input required asp-for="Title" class="form-control" placeholder="Escrever o nome" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description">Descrição</label>
+                            <input required asp-for="Description" class="form-control" placeholder="Escrever uma pequena descrição" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" id="newFormBtn" class="btn btn-submitPost1">Criar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
